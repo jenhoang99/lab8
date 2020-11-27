@@ -87,6 +87,13 @@ async def echo(reader, writer):
 
 
 async def main():
+    '''
+    Purpose: starts the agent server
+    Params: N/A
+    Return: N/A
+    Notes: 
+        Agent server run forever
+    '''
     server = await asyncio.start_server(echo, HOST, PORT)
     await server.serve_forever() # make sure program  will not terminates
 
