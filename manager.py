@@ -5,7 +5,7 @@ import sys
 AGENTS_FILE = 'agents.conf'
 BUF_SIZE = 1024
 
-async get_msg(reader):
+async def get_msg(reader):
     '''
     Purpose: receive the message from agent via reader and return that message
     Params:
@@ -15,11 +15,11 @@ async get_msg(reader):
 
     '''
     receive_msg = b''
-        while True:                        
-            next_data = await reader.read(n = BUF_SIZE)                        
-            if not next_data:                        
-                break                      
-            receive_msg = receive_msg + next_data
+    while True:                        
+        next_data = await reader.read(n = BUF_SIZE)                        
+        if not next_data:                        
+            break                      
+        receive_msg = receive_msg + next_data   
     return receive_msg
 
 
@@ -36,9 +36,9 @@ async def contact_agent(command_key, host, port):
     '''
     reader, writer = await asyncio.open_connection(host, port)        
     try:        
-        writer.write(command.encode('utf-8') + b'\n') 
+        writer.write(command_key.encode('utf-8') + b'\n') 
         await writer.drain()  
-        receive_msg = get_msg(reader)
+        receive_msg = await get_msg(reader)
 
         agent_info = writer.get_extra_info('peername')
         print(f"Response from {agent_info}")
